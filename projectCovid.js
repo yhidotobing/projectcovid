@@ -145,4 +145,5 @@ searchBar.addEventListener("keyup", (e) => {
     );
   });
   console.log(filteredCountry);
+  getPostGlobal(filteredCountry);
 });
