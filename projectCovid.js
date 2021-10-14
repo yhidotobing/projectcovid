@@ -5,8 +5,6 @@ const apiCovidDunia = "https://covid19.mathdro.id/api/";
 
 const apiCovidPageSearch = "https://covid19.mathdro.id/api/confirmed";
 
-const searchBar = document.querySelector("#searchBar");
-
 let result = [];
 
 const getPostIndonesia = async (API) => {
@@ -50,20 +48,24 @@ const getPostDunia = async (API) => {
   console.log(item);
 };
 
-const getPostGlobal = async (API) => {
-  const response = await fetch(API);
+const getPostGlobal = async () => {
+  const response = await fetch("https://covid19.mathdro.id/api/confirmed");
   result = await response.json();
+  displayGlobal(result);
   console.log(response);
-  console.log(result);
+  //   console.log(result);
 
-  result = result.filter((item, index) => {
-    if (index < 50) return item;
-  });
-  console.log(result);
+  //   result = result.filter((item, index) => {
+  //     if (index < 1000) return item;
+  //   });
+  //   console.log(result);
+};
 
-  const postCasesGlobal = document.querySelector(".tes");
-  result.forEach((item) => {
-    postCasesGlobal.innerHTML += `<div class="row">
+const postCasesGlobal = document.querySelector(".tes");
+const displayGlobal = (countries) => {
+  const htmlString = countries
+    .map((item) => {
+      return `
       <div class="col">
         <div class="card text-dark bg-light mb-3" style="max-width: 18rem">
           <div class="card-header">${item.combinedKey}</div>
@@ -84,58 +86,17 @@ const getPostGlobal = async (API) => {
             </div>
           </div>
         </div>
-      </div>
-      <div class="col">
-        <div class="card text-dark bg-light mb-3" style="max-width: 18rem">
-          <div class="card-header">${item.combinedKey}</div>
-          <div class="card-body">
-            <div class="row">
-              <div class="col">
-                <h6>Kasus</h6>
-                <p class="kasus">${item.confirmed}</p>
-              </div>
-              <div class="col">
-                <h6>Sembuh</h6>
-                <p class="sembuh">${item.recovered}</p>
-              </div>
-              <div class="col">
-                <h6>Meninggal</h6>
-                <p class="meninggal">${item.deaths}</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="col">
-        <div class="card text-dark bg-light mb-3" style="max-width: 18rem">
-          <div class="card-header">${item.combinedKey}</div>
-          <div class="card-body">
-            <div class="row">
-              <div class="col">
-                <h6>Kasus</h6>
-                <p class="kasus">${item.confirmed}</p>
-              </div>
-              <div class="col">
-                <h6>Sembuh</h6>
-                <p class="sembuh">${item.recovered}</p>
-              </div>
-              <div class="col">
-                <h6>Meninggal</h6>
-                <p class="meninggal">${item.deaths}</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>`;
-    console.log(item);
-  });
+      </div>`;
+    })
+    .join("");
+  postCasesGlobal.innerHTML = htmlString;
 };
 
 getPostIndonesia(apiCovidIndonesia);
 getPostDunia(apiCovidDunia);
-getPostGlobal(apiCovidPageSearch);
+getPostGlobal();
 
+const searchBar = document.querySelector("#searchBar");
 searchBar.addEventListener("keyup", (e) => {
   const target = e.target.value;
   const filteredCountry = result.filter((item) => {
@@ -144,6 +105,6 @@ searchBar.addEventListener("keyup", (e) => {
       item.combinedKey.toLowerCase().includes(target.toLowerCase())
     );
   });
+  displayGlobal(filteredCountry);
   console.log(filteredCountry);
-  getPostGlobal(filteredCountry);
 });
