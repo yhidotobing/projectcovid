@@ -15,17 +15,21 @@ const getPostIndonesia = async (API) => {
 
   const postCasesIndonesia = document.querySelector(".cases");
   result.forEach((item) => {
-    postCasesIndonesia.innerText = `${item.confirmed}`;
+    postCasesIndonesia.innerText = `${Intl.NumberFormat().format(
+      item.confirmed
+    )}`;
     console.log(item);
   });
   const postRecoverIndonesia = document.querySelector(".recover");
   result.forEach((item) => {
-    postRecoverIndonesia.innerText = `${item.recovered}`;
+    postRecoverIndonesia.innerText = `${Intl.NumberFormat().format(
+      item.recovered
+    )}`;
     console.log(item);
   });
   const postDeathIndonesia = document.querySelector(".death");
   result.forEach((item) => {
-    postDeathIndonesia.innerText = `${item.deaths}`;
+    postDeathIndonesia.innerText = `${Intl.NumberFormat().format(item.deaths)}`;
     console.log(item);
   });
 };
@@ -37,13 +41,19 @@ const getPostDunia = async (API) => {
   console.log(result);
 
   const postRecoverWorld = document.querySelector(".recoverworld");
-  postRecoverWorld.innerText = `${result.recovered.value}`;
+  postRecoverWorld.innerText = `${Intl.NumberFormat().format(
+    result.recovered.value
+  )}`;
 
   const postDeathWorld = document.querySelector(".deathworld");
-  postDeathWorld.innerText = `${result.deaths.value}`;
+  postDeathWorld.innerText = `${Intl.NumberFormat().format(
+    result.deaths.value
+  )}`;
 
   const postCasesWorld = document.querySelector(".casesworld");
-  postCasesWorld.innerText = `${result.confirmed.value}`;
+  postCasesWorld.innerText = `${Intl.NumberFormat().format(
+    result.confirmed.value
+  )}`;
 
   console.log(item);
 };
@@ -61,27 +71,27 @@ const getPostGlobal = async () => {
   //   console.log(result);
 };
 
-const postCasesGlobal = document.querySelector(".tes");
+const postCasesGlobal = document.querySelector(".main");
 const displayGlobal = (countries) => {
   const htmlString = countries
     .map((item) => {
       return `
       <div class="col">
-        <div class="card text-dark bg-light mb-3" style="max-width: 18rem">
-          <div class="card-header">${item.combinedKey}</div>
+        <div class="card border-dark mb-3" style="max-width: 18rem">
+          <div class="card-header fw-bold">${item.combinedKey}</div>
           <div class="card-body">
             <div class="row">
               <div class="col">
-                <h6>Kasus</h6>
-                <p class="kasus">${item.confirmed}</p>
+                <h6>Cases</h6>
+                <p>${Intl.NumberFormat().format(item.confirmed)}</p>
               </div>
               <div class="col">
-                <h6>Sembuh</h6>
-                <p class="sembuh">${item.recovered}</p>
+                <h6 class="text-primary">Recovered</h6>
+                <p>${Intl.NumberFormat().format(item.recovered)}</p>
               </div>
               <div class="col">
-                <h6>Meninggal</h6>
-                <p class="meninggal">${item.deaths}</p>
+                <h6 class="text-danger">Death</h6>
+                <p>${Intl.NumberFormat().format(item.deaths)}</p>
               </div>
             </div>
           </div>
@@ -105,6 +115,14 @@ searchBar.addEventListener("keyup", (e) => {
       item.combinedKey.toLowerCase().includes(target.toLowerCase())
     );
   });
-  displayGlobal(filteredCountry);
-  console.log(filteredCountry);
+  if (Object.keys(filteredCountry).length === 0) {
+    postCasesGlobal.innerHTML = `
+    <div class="container-fluid mt-2 text-center" style="margin-left:350px">
+    <img src ="notfound.svg" style="max-width: 50%">
+    <h5>Sorry, We Couldn't find any results</h5>
+    </div>`;
+  } else {
+    displayGlobal(filteredCountry);
+    console.log(filteredCountry);
+  }
 });
