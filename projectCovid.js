@@ -63,12 +63,6 @@ const getPostGlobal = async () => {
   result = await response.json();
   displayGlobal(result);
   console.log(response);
-  //   console.log(result);
-
-  //   result = result.filter((item, index) => {
-  //     if (index < 1000) return item;
-  //   });
-  //   console.log(result);
 };
 
 const postCasesGlobal = document.querySelector(".main");
